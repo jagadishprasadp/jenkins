@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Profile Settings{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4">Profile Settings</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.label }}<br>
+            {{ form.font_style }}
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+{% endblock %}
