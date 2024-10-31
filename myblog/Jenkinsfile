@@ -45,4 +45,13 @@ pipeline {
             }
         }
     }
+
+    post {
+        failure {
+            echo 'Pipeline failed! Please check the logs for more details.'
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+    }
 }
