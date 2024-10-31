@@ -11,7 +11,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Clone the Django app repository
-                git branch: 'main', url: 'https://github.com/jagadishprasadp/jenkins/myblog.git'
+                git branch: 'main', url: 'https://github.com/jagadishprasadp/jenkins.git'
             }
         }
 
