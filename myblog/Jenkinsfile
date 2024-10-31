@@ -1,29 +1,22 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Run Batch Command') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/jagadishprasadp/jenkins.git',
-                    credentialsId: 'project-deploy'
+                // Run a basic batch command to confirm setup
+                bat 'echo Running a batch command in Jenkins on Windows'
             }
         }
-        stage('Run Tests') {
+        stage('Run Test Script') {
             steps {
-                // Use a Windows-compatible command
-                bat 'run-tests.bat' // Replace with actual test command
-            }
-        }
-        stage('Deploy to EC2') {
-            steps {
-                // Replace with a PowerShell or appropriate command
-                bat 'deploy-to-ec2.ps1' // Replace with actual deployment command
+                // Run your actual test script or command
+                bat 'run-tests.bat'
             }
         }
     }
     post {
         failure {
-            echo 'Pipeline failed! Please check the logs for more details.'
+            echo 'Pipeline failed! Check batch command for issues.'
         }
     }
 }
