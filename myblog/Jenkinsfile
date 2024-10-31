@@ -1,57 +1,29 @@
 pipeline {
     agent any
-
-    environment {
-        EC2_IP = '16.170.226.198'
-        SSH_KEY_PATH = '/var/lib/jenkins/.ssh/id_rsa'
-        APP_DIR = '/home/ec2-user/jenkins/myblog'
-    }
-
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                // Clone the Django app repository
-                git branch: 'main', url: 'https://github.com/jagadishprasadp/jenkins.git'
+                git branch: 'main',
+                    url: 'https://github.com/jagadishprasadp/jenkins.git',
+                    credentialsId: 'project-deploy'
             }
         }
-
         stage('Run Tests') {
             steps {
-                // Run Django tests in a local virtual environment
-                sh """
-                    python3 -m venv venv
-                    source venv/bin/activate
-                    pip install -r requirements.txt
-                    python manage.py test
-                """
+                // Use a Windows-compatible command
+                bat 'run-tests.bat' // Replace with actual test command
             }
         }
-
         stage('Deploy to EC2') {
             steps {
-                // SSH into EC2 and pull the latest code
-                sshagent(['jenkins-ssh-credentials-id']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$EC2_IP '
-                            cd $APP_DIR &&
-                            git pull origin main &&
-                            python3 -m venv venv &&
-                            source venv/bin/activate &&
-                            pip install -r requirements.txt &&
-                            sudo systemctl restart nginx
-                        '
-                    """
-                }
+                // Replace with a PowerShell or appropriate command
+                bat 'deploy-to-ec2.ps1' // Replace with actual deployment command
             }
         }
     }
-
     post {
         failure {
             echo 'Pipeline failed! Please check the logs for more details.'
-        }
-        success {
-            echo 'Pipeline completed successfully!'
         }
     }
 }
