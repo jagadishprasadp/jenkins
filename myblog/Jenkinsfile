@@ -5,7 +5,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/jagadishprasadp/jenkins.git',
-                    credentialsId: 'project-deploy'
+                    credentialsId: '4f990259-2d2f-4c0b-a7ab-be39ea5c59bf'
             }
         }
         stage('Verify Python Installation') {
