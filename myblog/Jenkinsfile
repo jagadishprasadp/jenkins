@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
             steps {
@@ -30,14 +31,20 @@ pipeline {
         }
         stage('Start Application') {
             steps {
-                 // Adjust the path to the manage.py file
-                 bat '.\\venv\\Scripts\\python myblog\\manage.py runserver 0.0.0.0:8000'
+                bat '.\\venv\\Scripts\\python myblog\\manage.py runserver 0.0.0.0:8000'
             }
         }
     }
+
     post {
+        always {
+            echo 'Cleaning up...'
+        }
         failure {
             echo 'Pipeline failed! Check the logs for more details.'
+        }
+        success {
+            echo 'Pipeline completed successfully.'
         }
     }
 }
