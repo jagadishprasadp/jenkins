@@ -1,22 +1,33 @@
 pipeline {
     agent any
     stages {
-        stage('Run Batch Command') {
+        stage('Checkout') {
             steps {
-                // Run a basic batch command to confirm setup
-                bat 'echo Running a batch command in Jenkins on Windows'
+                git branch: 'main',
+                    url: 'https://github.com/jagadishprasadp/jenkins.git',
+                    credentialsId: 'project-deploy'
             }
         }
-        stage('Run Test Script') {
+        stage('Setup Environment') {
             steps {
-                // Run your actual test script or command
-                bat 'run-tests.bat'
+                // Set up Python virtual environment
+                bat 'python -m venv venv'
+                bat 'venv\\Scripts\\activate && pip install -r requirements.txt'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Replace with your deployment commands
+                bat 'venv\\Scripts\\activate && echo Deploying your Django project'
             }
         }
     }
     post {
         failure {
-            echo 'Pipeline failed! Check batch command for issues.'
+            echo 'Pipeline failed! Check the logs for more details.'
+        }
+        success {
+            echo 'Pipeline completed successfully!'
         }
     }
 }
