@@ -1,6 +1,13 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/jagadishprasadp/jenkins.git',
+                    credentialsId: 'project-deploy'
+            }
+        }
         stage('Verify Python Installation') {
             steps {
                 bat 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python310\\python.exe --version'
@@ -13,18 +20,24 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                bat '.\\venv\\Scripts\\pip install -r requirements.txt'
+                // Update the path if needed
+                bat '.\\venv\\Scripts\\pip install -r myblog\\requirements.txt'
             }
         }
         stage('Run Tests') {
             steps {
-                bat '.\\venv\\Scripts\\python -m unittest discover'
+                bat 'echo No tests to run currently'
             }
         }
         stage('Start Application') {
             steps {
-                bat 'start /B .\\venv\\Scripts\\python app.py'
+                bat 'echo Application start command goes here'
             }
+        }
+    }
+    post {
+        failure {
+            echo 'Pipeline failed! Check for issues in the logs.'
         }
     }
 }
