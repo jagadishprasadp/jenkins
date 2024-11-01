@@ -5,7 +5,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'git@github.com:jagadishprasadp/jenkins.git',
-                    credentialsId: 'github-ssh-key'
+                    credentialsId: '0177e520-2f18-4d84-b111-167da6b0bbeb'
             }
         }
         stage('Verify Python Installation') {
