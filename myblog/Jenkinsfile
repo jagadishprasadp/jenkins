@@ -30,8 +30,8 @@ pipeline {
         }
         stage('Start Application') {
             steps {
-                // Replace the echo command with your Django application's start command
-                bat '.\\venv\\Scripts\\python manage.py runserver 0.0.0.0:8000'
+                 // Adjust the path to the manage.py file
+                 bat '.\\venv\\Scripts\\python myblog\\manage.py runserver 0.0.0.0:8000'
             }
         }
     }
