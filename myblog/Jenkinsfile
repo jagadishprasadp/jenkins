@@ -1,33 +1,30 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Verify Python Installation') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/jagadishprasadp/jenkins.git',
-                    credentialsId: 'project-deploy'
+                bat 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python310\\python.exe --version'
             }
         }
-        stage('Setup Environment') {
+        stage('Setup Python Virtual Environment') {
             steps {
-                // Set up Python virtual environment
-                bat 'python -m venv venv'
-                bat 'venv\\Scripts\\activate && pip install -r requirements.txt'
+                bat 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python310\\python.exe -m venv venv'
             }
         }
-        stage('Deploy') {
+        stage('Install Dependencies') {
             steps {
-                // Replace with your deployment commands
-                bat 'venv\\Scripts\\activate && echo Deploying your Django project'
+                bat '.\\venv\\Scripts\\pip install -r requirements.txt'
             }
         }
-    }
-    post {
-        failure {
-            echo 'Pipeline failed! Check the logs for more details.'
+        stage('Run Tests') {
+            steps {
+                bat '.\\venv\\Scripts\\python -m unittest discover'
+            }
         }
-        success {
-            echo 'Pipeline completed successfully!'
+        stage('Start Application') {
+            steps {
+                bat 'start /B .\\venv\\Scripts\\python app.py'
+            }
         }
     }
 }
